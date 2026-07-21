@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LakiWin 營運指南地圖｜工作分派表</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <div>
+        <div class="eyebrow" id="eyebrow">Operations Ownership Map</div>
+        <h1 id="title">LakiWin 營運指南地圖｜工作分派表</h1>
+      </div>
+      <div class="meta" id="updated">更新日期｜2026.07.20</div>
+    </header>
+
+    <div class="table-wrap">
+      <table>
+        <colgroup><col><col><col><col></colgroup>
+        <thead>
+          <tr><th>營運項目</th><th>類型</th><th>具體工作</th><th>負責人／角色</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <p class="foot">本頁資料由 <code>data.js</code> 產生。更新方式與部署說明請參考 <code>README.md</code>。</p>
+  </main>
+
+  <!-- 先載入資料，再載入產生程式（順序不可顛倒） -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
