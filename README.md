@@ -183,7 +183,7 @@ https://<你的 GitHub 帳號>.github.io/<repo 名稱>/
 實際網址會顯示在該 Repository 的 **Settings ➜ Pages** 頁面最上方。
 **（請把這個網址記錄在這裡，方便團隊查閱）**：
 
-- 正式網址：`（部署完成後填入）`
+- 正式網址：`https://joannebuildai.github.io/lakiwin-operation/`
 
 ---
 
@@ -214,3 +214,37 @@ https://<你的 GitHub 帳號>.github.io/<repo 名稱>/
   正式資料唯一來源就是 `data.js`。
 - 若未來想做「直接在網頁上編輯並永久保存」，需要額外的後端／資料庫與登入機制，
   請先與工程人員討論（會涉及權限、資安與維護成本），不要自行加入。
+
+---
+
+## 13. 換一台電腦，如何恢復「自動推送」（換機設定）
+
+> 資料都存在 GitHub，網站與網址永遠不變。換電腦只是要在新電腦上「重新放一次鑰匙」。
+> Claude Code 的對話紀錄存在舊電腦本機，通常不會跟到新電腦，所以照這份步驟重做即可。
+
+**固定資訊（不會變）**
+- Repository：`https://github.com/JoannebuildAI/lakiwin-operation`
+- 正式網址：`https://joannebuildai.github.io/lakiwin-operation/`
+- GitHub 帳號：`JoannebuildAI`
+
+**新電腦一次性設定（做完就能請 Claude Code 自動推送）**
+
+1. 安裝 Claude Code，用同一個 Anthropic 帳號登入。
+2. 打開「終端機」，把專案抓下來（會建立 `~/Desktop/lakiwin-operation` 資料夾）：
+   ```
+   cd ~/Desktop
+   git clone https://github.com/JoannebuildAI/lakiwin-operation.git
+   ```
+   （若跳出要安裝「命令列工具（Command Line Tools）」，按安裝，裝完再執行一次。）
+3. 準備 GitHub Token：可沿用舊的（沒過期的話），或到 `https://github.com/settings/tokens`
+   重新 Generate new token (classic) → 勾 `repo` → 產生後複製。
+4. 在終端機把 Token 存進這台電腦（把 你的TOKEN 換成實際的 ghp_...）：
+   ```
+   printf "protocol=https\nhost=github.com\nusername=JoannebuildAI\npassword=你的TOKEN\n\n" | git credential approve
+   ```
+   沒有訊息就是成功。
+5. 之後在 Claude Code 打開 `~/Desktop/lakiwin-operation` 這個資料夾，直接請它更新內容即可，
+   它就會自動 commit + push，網站 1～3 分鐘內更新。
+
+**臨時應急（任何裝置、免設定）**
+- 只要有瀏覽器，到 GitHub 打開 `data.js` → 鉛筆✏️編輯 → Commit，網站一樣會更新。
