@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LakiWin 營運指南地圖｜工作分派表</title>
+  <style>
+    :root {
+      --navy: #15365e;
+      --navy-2: #214f7d;
+      --blue-soft: #eef5fb;
+      --ink: #182638;
+      --muted: #68798d;
+      --line: #d8e2ed;
+      --accent: #20a3a0;
+      --accent-soft: #e7f7f5;
+      --paper: #fff;
+      --canvas: #f2f5f8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--canvas);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    }
+
+    .page {
+      width: min(1480px, calc(100% - 40px));
+      margin: 28px auto;
+      padding: 34px 40px 40px;
+      background: var(--paper);
+      border: 1px solid #e5ebf1;
+      border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(18, 47, 78, .10);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      margin-bottom: 7px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(27px, 3vw, 42px);
+      line-height: 1.15;
+      letter-spacing: .01em;
+    }
+
+    .meta {
+      flex: 0 0 auto;
+      padding: 9px 13px;
+      color: var(--muted);
+      background: #f5f8fb;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .table-wrap {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    col:nth-child(1) { width: 27%; }
+    col:nth-child(2) { width: 19%; }
+    col:nth-child(3) { width: 34%; }
+    col:nth-child(4) { width: 20%; }
+
+    thead th {
+      padding: 15px 17px;
+      color: #fff;
+      background: var(--navy);
+      border-right: 1px solid rgba(255,255,255,.22);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-align: left;
+    }
+
+    thead th:last-child { border-right: 0; }
+
+    tbody td {
+      padding: 13px 17px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      line-height: 1.45;
+      vertical-align: middle;
+    }
+
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody td:last-child { border-right: 0; }
+    tbody tr:nth-child(even) td { background: #f8fafc; }
+
+    .path {
+      color: var(--navy);
+      font-weight: 750;
+    }
+
+    .type {
+      display: inline-block;
+      padding: 5px 9px;
+      color: var(--navy-2);
+      background: var(--blue-soft);
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .owner {
+      font-weight: 750;
+    }
+
+    .role-stack {
+      display: grid;
+      gap: 7px;
+    }
+
+    .role {
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .role-label {
+      padding: 4px 6px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 900;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .role.primary .role-label {
+      color: #fff;
+      background: var(--navy-2);
+    }
+
+    .role.product .role-label {
+      color: #08736f;
+      background: var(--accent-soft);
+      border: 1px solid #bfe7e3;
+    }
+
+    .role.support .role-label {
+      color: #5e6f82;
+      background: #edf1f5;
+    }
+
+    .focus td {
+      background: #f2fbfa !important;
+      box-shadow: inset 0 1px 0 #bfe7e3, inset 0 -1px 0 #bfe7e3;
+    }
+
+    .focus td:first-child { box-shadow: inset 4px 0 0 var(--accent), inset 0 1px 0 #bfe7e3, inset 0 -1px 0 #bfe7e3; }
+
+    .progress-row td {
+      padding: 9px 17px 11px;
+      color: #53677d;
+      background: #f4f7fa !important;
+      border-bottom: 2px solid #cbd8e5;
+      font-size: 13px;
+      vertical-align: top;
+    }
+
+    .progress-label {
+      color: var(--navy-2);
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .progress-content {
+      min-height: 24px;
+      padding: 3px 7px;
+      border: 1px dashed #aebdcd;
+      border-radius: 6px;
+      background: rgba(255,255,255,.75);
+      outline: none;
+    }
+
+    .progress-content:focus {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 2px rgba(32,163,160,.12);
+    }
+
+    @media (max-width: 900px) {
+      .page { width: 100%; margin: 0; padding: 24px 18px; border-radius: 0; }
+      .header { align-items: flex-start; flex-direction: column; }
+      .table-wrap { overflow-x: auto; }
+      table { min-width: 1060px; }
+    }
+
+    @media print {
+      @page { size: A3 landscape; margin: 12mm; }
+      body { background: #fff; }
+      .page { width: 100%; margin: 0; padding: 0; border: 0; border-radius: 0; box-shadow: none; }
+      h1 { font-size: 31px; }
+      tbody td { padding: 10px 14px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <div>
+        <div class="eyebrow">Operations Ownership Map</div>
+        <h1>LakiWin 營運指南地圖｜工作分派表</h1>
+      </div>
+      <div class="meta">更新日期｜2026.07.20</div>
+    </header>
+
+    <div class="table-wrap">
+      <table>
+        <colgroup><col><col><col><col></colgroup>
+        <thead>
+          <tr><th>營運項目</th><th>類型</th><th>具體工作</th><th>負責人／角色</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="path">玩家遊玩歷程 ＞ 帳號註冊</td><td><span class="type">OTP 簡訊</span></td><td>OTP 簡訊發送、接收及相關處理</td><td class="owner">王巧玲</td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr><td class="path">玩家遊玩歷程 ＞ KYC</td><td><span class="type">KYC 合規</span></td><td>KYC 流程、驗證要求及 PAGCOR 合規事項</td><td class="owner">劉欣枚</td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr><td class="path">玩家遊玩歷程 ＞ 上下分</td><td><span class="type">金流</span></td><td>上分、下分及相關金流處理</td><td class="owner">陳立恩、黃士懿</td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr><td class="path">玩家遊玩歷程 ＞ 客服與 CRM</td><td><span class="type">客服／CRM</span></td><td>客服處理、玩家維繫、召回及 CRM 執行</td><td class="owner">黃柏翔、何堉詮、余胤霆</td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr><td class="path">活動與獎勵</td><td><span class="type">活動送審</span></td><td>活動方案、獎勵內容及 PAGCOR 送審</td><td class="owner">劉欣枚</td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr><td class="path">活動與獎勵</td><td><span class="type">推廣合作</span></td><td>尋找推廣活動贊助商，以及與遊戲商洽談合作細節</td><td><div class="role-stack"><div class="role primary"><span class="role-label">主要</span><span class="owner">劉欣枚</span></div><div class="role support"><span class="role-label">輔助</span><span class="owner">陳立恩</span></div></div></td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr><td class="path">代理渠道 ＞ 網咖</td><td><span class="type">網咖渠道</span></td><td>網咖洽談、合作執行及營運管理</td><td class="owner">黃柏翔、何堉詮、余胤霆</td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr><td class="path">代理渠道 ＞ Sari-Sari Store</td><td><span class="type">Sari-Sari Store 渠道</span></td><td>店家拓展、合作執行及營運管理</td><td class="owner">黃柏翔、何堉詮、余胤霆</td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr><td class="path">代理渠道 ＞ KOL／網紅</td><td><span class="type">KOL 合作</span></td><td>KOL／網紅開發、合作洽談及執行</td><td><div class="role-stack"><div class="role primary"><span class="role-label">主要</span><span class="owner">蕭楨憶</span></div><div class="role support"><span class="role-label">輔助</span><span class="owner">劉郡庭</span></div></div></td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr><td class="path">自製遊戲</td><td><span class="type">自製遊戲</span></td><td>自製遊戲整體規劃、開發、上線及維運</td><td class="owner">梁家瑋</td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr><td class="path">法規與合規流程</td><td><span class="type">法規與合規</span></td><td>PAGCOR 法規、KYC、NDRP、責任博彩、稽核及送審</td><td><div class="role-stack"><div class="role primary"><span class="role-label">主要</span><span class="owner">劉欣枚</span></div><div class="role support"><span class="role-label">輔助</span><span class="owner">卓緯倫</span></div></div></td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr><td class="path">對帳流程</td><td><span class="type">對帳</span></td><td>日結、GGR、遊戲商、代理商及金流對帳</td><td class="owner">卓緯倫</td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr class="focus"><td class="path">GCash Casual Game 導流</td><td><span class="type">GCash／Casual Game 導流</span></td><td>GCash／GLife、Casual Game、白手套及技術對接</td><td><div class="role-stack"><div class="role primary"><span class="role-label">主要維運</span><span class="owner">梁家瑋</span></div><div class="role product"><span class="role-label">產品設計</span><span class="owner">鄭郁儒</span></div></div></td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+          <tr><td class="path">行銷導量循環</td><td><span class="type">行銷導量</span></td><td>廣告、SEO、活動、追蹤及整體導量執行</td><td class="owner">行銷團隊</td></tr>
+          <tr class="progress-row"><td class="progress-label">目前進度</td><td colspan="3"><div class="progress-content" contenteditable="true">尚待填寫</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>
