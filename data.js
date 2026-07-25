@@ -157,7 +157,7 @@ const TASKS = [
         { role: "輔助", name: "卓緯倫" }
       ]
     },
-    progress: { status: "尚待填寫", description: "", updatedAt: "" }
+    progress: { status: "進行中", description: "已與 Francis 確認完所有稽核項目", updatedAt: "2026.07.26" }
   },
   {
     category: "對帳流程",
